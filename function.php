@@ -102,6 +102,44 @@ class Delete extends Connection {
     }
 }
 
+class Change extends Connection {
+    
+    public function change($id, $oldpassword, $newpassword) {
+        $id = mysqli_real_escape_string($this->conn, $id);
+        $oldpassword = mysqli_real_escape_string($this->conn, $oldpassword);
+        $newpassword = mysqli_real_escape_string($this->conn, $newpassword);
+        
+        // Hash the new password using MD5
+        $newpassword = md5($newpassword);
+        
+        // Retrieve the current hashed password from the database using the unique identifier
+        $query = "SELECT password FROM users WHERE id = '$id'";
+        $result = mysqli_query($this->conn, $query);
+        
+        if ($result && mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            $hashedPassword = $row['password'];
+            
+            // Verify the old password against the hashed password
+            if (md5($oldpassword) === $hashedPassword) {
+                // Update the password in the database
+                $update = "UPDATE users SET password = '$newpassword' WHERE id = '$id'";
+                $updateResult = mysqli_query($this->conn, $update);
+                
+                if ($updateResult) {
+                    return 1; // Password updated successfully
+                } else {
+                    return 10; // Failed to update the password
+                }
+            } else {
+                return 100; // Old password doesn't match
+            }
+        } else {
+            return false; // Failed to fetch the current password
+        }
+    }
+}
+
 
 
 // class SelectAdmin extends Connection{

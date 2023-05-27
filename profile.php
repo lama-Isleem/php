@@ -49,18 +49,24 @@ if(isset($_SESSION["id"])){
 <pre>
     
 
-
-
-
 </pre>
 
 <div class="header2" >
-    <h2>WELCOME <span> <?php echo $user["name"] ;  ?></span></h2> 
+    <h2>WELCOME <span> <?php echo $user["name"] ;  ?></span></h2>
+     
 </div>
+
+<div class ="change">
+    <a href="changepass.php" class="btn">change password</a>
+    <style>.change{ position: absolute;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);}</style>
+</div>
+
 
 <pre>
     
-
 
 
 </pre>
